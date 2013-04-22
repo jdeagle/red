@@ -6,7 +6,7 @@ define(function (require) {
 		ImageData = require("../images/ImageData"),
 		SRC = '/project/static/img/tesla.jpg',
 		shapes = [],
-		size = 50;
+		size = Math.random() * (35 - 5) + 5;
 
 	function Square(x, y, size) {
 		this.x = x;
@@ -21,7 +21,7 @@ define(function (require) {
 	Square.prototype = {
 		tick : function () {
 			if (this.delay > 0) {
-				this.delay -= 0.100;
+				this.delay -= 0.300;
 				if (this.delay <= 0) {
 					this.dirty = true;
 				}
@@ -64,7 +64,8 @@ define(function (require) {
 			for (var i = 0; i < rows; i++) {
 				for (var n = 0; n < cols; n++) {
 					var shape = new Square(n * size, i * size, size);
-					shape.delay = Math.random() * i;
+					//shape.delay = Math.max(Math.random() * i, 0.1);
+					shape.delay = (i / 2) + Math.max(Math.random() * (i / 2), 0.1);
 				}
 			}
 
