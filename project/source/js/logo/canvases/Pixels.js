@@ -30,11 +30,6 @@ define(function (require) {
 		},
 		getSliver : function ()  {
 
-			//this.percentShown += (1 - this.percentShown) * 0.5;
-			//this.percentShown = (this.percentShown > 0.99) ? 1 : this.percentShown;
-
-
-
 			this.dirty = false;
 
 			return 1;
@@ -47,6 +42,7 @@ define(function (require) {
 	return require("../Canvas").extend({
 
 		init : function () {
+			this.forceForeground = true;
 			this.image = new ImageData();
 			this.image.setSrc(SRC);
 			this.image.setScaleMode('cover');
@@ -54,6 +50,8 @@ define(function (require) {
 		},
 
 		prepare : function () {
+
+			shapes = [];
 
 			this.image.setWidthAndHeight(this.width, this.height);
 			this.image.rebuild();
