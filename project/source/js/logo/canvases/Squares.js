@@ -49,10 +49,13 @@ define(function (require) {
 			this.image = new ImageData();
 			this.image.setSrc(SRC);
 			this.image.setScaleMode('cover');
+
 			this.sup();
 		},
 
 		prepare : function () {
+
+			shapes = [];
 
 			this.image.setWidthAndHeight(this.width, this.height);
 			this.image.rebuild();
@@ -61,22 +64,47 @@ define(function (require) {
 			var cols = Math.ceil(this.width / size),
 				rows = Math.ceil(this.height / size);
 
+
+
+			this.originX = Math.floor(Math.random() * cols);
+			this.originY = Math.floor(Math.random() * rows);
+
+			this.drawFromCenter = Math.round(Math.random()) > 0;
+
 			for (var i = 0; i < rows; i++) {
 				for (var n = 0; n < cols; n++) {
 					var shape = new Square(n * size, i * size, size);
 					//shape.delay = Math.max(Math.random() * i, 0.1);
-					shape.delay = (i / 2) + Math.max(Math.random() * (i / 2), 0.1);
+					if (this.drawFromCenter) {
+						shape.delay = this.getAngle(n, i, cols, rows) * 0.5 + 0.1;
+					} else {
+						shape.delay = (i / 2) + Math.max(Math.random() * (i / 2), 0.1);
+					}
 				}
 			}
 
 			this.shuffled = this.shuffle(shapes.slice(0));
-
 		},
 
 		destroy : function () {
 			this.removeShapes();
 			shapes = null;
 			this.sup();
+		},
+
+		getAngle : function (x, y, cols, rows) {
+
+			var distanceX = Math.abs(x - this.originX);//Math.abs(x - cols * 0.5);
+			var distanceY = Math.abs(y - this.originY);//Math.abs(y - rows * 0.5);
+
+			return Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
+
+		},
+
+		getDistanceFromCenter : function (i, total) {
+			var center = Math.round(total * 0.5);
+
+			return Math.abs(i - center);
 		},
 
 		shuffle : function (o) { //http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
